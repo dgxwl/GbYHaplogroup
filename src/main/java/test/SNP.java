@@ -1,8 +1,13 @@
 package test;
 
-public class SNP {
+import java.io.Serializable;
+
+public class SNP implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String name;
 	private String haplogroup;
+	private String rsid;
 	private String hg19Pos;
 	private String hg38Pos;
 	private String original;
@@ -26,6 +31,14 @@ public class SNP {
 
 	public String getHg19Pos() {
 		return hg19Pos;
+	}
+
+	public String getRsid() {
+		return rsid;
+	}
+
+	public void setRsid(String rsid) {
+		this.rsid = rsid;
 	}
 
 	public void setHg19Pos(String hg19Pos) {
@@ -58,8 +71,8 @@ public class SNP {
 
 	@Override
 	public String toString() {
-		return "SNP [name=" + name + ", haplogroup=" + haplogroup + ", hg19Pos=" + hg19Pos + ", hg38Pos=" + hg38Pos
-				+ ", original=" + original + ", mutant=" + mutant + "]";
+		return "SNP [name=" + name + ", haplogroup=" + haplogroup + ", rsid=" + rsid + ", hg19Pos=" + hg19Pos
+				+ ", hg38Pos=" + hg38Pos + ", original=" + original + ", mutant=" + mutant + "]";
 	}
 
 }
