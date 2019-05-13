@@ -7,11 +7,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.poi</groupId> -->
-<!-- 			<artifactId>poi-ooxml</artifactId> -->
-<!-- 			<version>4.1.0</version> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.0</version>
+		</dependency>
 	</dependencies>
 
 	<properties>
@@ -29,11 +29,12 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>test.ParseRawData</mainClass><!-- 包含main方法主类的全路径 -->
+							<mainClass>gene.ParseRawData</mainClass><!-- 包含main方法主类的全路径 -->
 						</manifest>
 					</archive>
 					<source>1.8</source>
 					<target>1.8</target>
+					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
 		</plugins>

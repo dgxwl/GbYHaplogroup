@@ -1,5 +1,7 @@
 package test;
 
+import test.ParseSNPsXlsx;
+
 /**
  * 解析原始文件
  * @author Administrator
