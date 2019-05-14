@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -39,7 +40,7 @@ public class ParseSNPsXlsx {
 			System.exit(0);
 		}
 		
-		snpMap = new TreeMap<>();
+		snpMap = new HashMap<>();
 		
 		try (XSSFWorkbook workbook = new XSSFWorkbook(snpFile);
 				FileOutputStream fos = new FileOutputStream("./data/snps.data");
