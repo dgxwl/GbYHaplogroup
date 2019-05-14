@@ -16,22 +16,32 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- 不加上就报GBK乱码错误 -->
 	</properties>
 
-	<build><!-- 有这坨才能用mvn package打包 -->
+	<build><!-- 有这坨才能用mvn package打包, 然后 Run As -> 4.Maven Build, goal填: clean assembly:assembly -->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5</version>
+				<configuration>
+					<verbose>true</verbose>
+					<fork>true</fork>
+					<executable>C:/Program Files/Java/jdk1.8.0_172/bin/javac</executable>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
 					<archive>
 						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>gene.ParseRawData</mainClass><!-- 包含main方法主类的全路径 -->
+							<mainClass>test.ParseRawData</mainClass><!-- 包含main方法主类的全路径 -->
 						</manifest>
 					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
 					<source>1.8</source>
 					<target>1.8</target>
 					<skipTests>true</skipTests>
