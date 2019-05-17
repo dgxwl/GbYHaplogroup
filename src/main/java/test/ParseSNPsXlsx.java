@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -121,7 +120,7 @@ public class ParseSNPsXlsx {
 	private static void readFromSerializedData() {
 		try (FileInputStream fis = new FileInputStream("./data/snps.data");
 				ObjectInputStream ois = new ObjectInputStream(fis)) {
-			snpMap = (TreeMap<String, SNP>) ois.readObject();
+			snpMap = (HashMap<String, SNP>) ois.readObject();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
