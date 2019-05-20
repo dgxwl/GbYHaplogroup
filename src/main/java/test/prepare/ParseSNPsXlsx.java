@@ -1,4 +1,4 @@
-package test;
+package test.prepare;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +13,9 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import test.entity.SNP;
+import test.util.StringUtils;
 
 /**
  * 解析isogg提供的SNP信息

@@ -1,4 +1,4 @@
-package test;
+package test.entity;
 
 public class Hg19AndName {
 	private String hg19;

@@ -4,9 +4,6 @@ import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -15,6 +12,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import test.algorithms.ParseContext;
+import test.algorithms.ParseTxtRawDataStrategy;
+import test.algorithms.ParseXlsxRawDataStrategy;
 
 /**
  * 解析原始文件
@@ -59,40 +60,6 @@ public class ParseRawData extends JPanel {
 		frame.setVisible(true);
 	}
 
-	public static Map<String, SNP> snpMap = ParseSNPsXlsx.getSnpMap();
-	public void parseRawData(File rawFile) {
-		String hg19;
-		String genotype;
-		SNP snp;
-		StringBuilder builder = new StringBuilder();
-		List<SNP> sortList = new LinkedList<>();
-		try {
-			List<String[]> list = XLSXCovertCSVReader.readerExcel(rawFile.getPath(), "Sheet1", 4);
-			for (String[] record : list) {
-				if (!record[1].equals("Y")) {
-					continue;
-				}
-				hg19 = record[2];
-				genotype = record[3];
-				snp = snpMap.get(hg19);
-				if (snp == null) {
-					continue;
-				}
-				if (genotype.startsWith(snp.getMutant())) {
-					sortList.add(snp);
-				}
-			}
-			
-			sortList.sort((o1, o2) -> o1.getHaplogroup().compareTo(o2.getHaplogroup()));
-			for (SNP s : sortList) {
-				builder.append(s.getName()).append("\t").append(s.getHaplogroup()).append("\n");
-			}
-			textArea.setText(builder.toString());
-		} catch (Exception e) {
-			textArea.setText("错误: " + e.getMessage());
-		}
-	}
-
 	private void myEvent() {
 		// 打开菜单项监听
 		openItem.addActionListener(new ActionListener() {
@@ -109,7 +76,22 @@ public class ParseRawData extends JPanel {
 				rawDataFile = new File(dirpath, fileName);
 				try {
 					//处理原始数据文件, 单倍群分型
-					parseRawData(rawDataFile);
+					String suffix = rawDataFile.getName().substring(rawDataFile.getName().lastIndexOf('.') + 1);
+					ParseXlsxRawDataStrategy parseXlsx = new ParseXlsxRawDataStrategy();
+					ParseTxtRawDataStrategy parseTxt = new ParseTxtRawDataStrategy();
+					
+					String result;
+					switch (suffix) {
+					case "xlsx":
+						result = new ParseContext(parseXlsx).parse(rawDataFile);
+						break;
+					case "txt":
+						result = new ParseContext(parseTxt).parse(rawDataFile);
+						break;
+					default:
+						result = "无法解析 ." + suffix + "文件";
+					}
+					textArea.setText(result);
 				} catch (Exception e1) {
 					textArea.setText("错误: " + e1.getMessage());
 				}

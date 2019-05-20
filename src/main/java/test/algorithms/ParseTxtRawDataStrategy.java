@@ -1,26 +1,21 @@
-package test;
+package test.algorithms;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.Map;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-/**
- * 解析基因宝或魔方的原始数据文件 
- * @author Administrator
- *
- */
-public class ParseTextRawData2 {
-	public static void main(String[] args) {
-		try (FileReader fr = new FileReader("F:/raw.txt");
-				BufferedReader br = new BufferedReader(fr);
-				FileWriter fw = new FileWriter("F:/运行结果.txt");
-				BufferedWriter bw = new BufferedWriter(fw);
-				PrintWriter pw = new PrintWriter(bw, true)) {
+import test.entity.SNP;
+import test.prepare.ParseSNPsXlsx;
+
+public class ParseTxtRawDataStrategy implements IParseStrategy {
+
+	@Override
+	public String parse(File rawFile) {
+		try (FileReader fr = new FileReader(rawFile);
+				BufferedReader br = new BufferedReader(fr)) {
 			Map<String, SNP> snpMap = ParseSNPsXlsx.getSnpMap();
 			
 			String line;
@@ -49,13 +44,15 @@ public class ParseTextRawData2 {
 			}
 			list.sort(null);
 			
+			StringBuilder builder = new StringBuilder();
 			for (String l : list) {
-				pw.println(l);
+				builder.append(l).append('\n');
 			}
+			
+			return builder.toString();
 		} catch (Exception e) {
-			e.getStackTrace();
+			return "错误: " + e.getMessage();
 		}
-		
-		System.out.println("finished.");
 	}
+
 }

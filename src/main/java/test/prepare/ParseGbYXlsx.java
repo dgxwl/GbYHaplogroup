@@ -1,4 +1,4 @@
-package test;
+package test.prepare;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,6 +11,9 @@ import java.util.Map;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import test.entity.Hg19AndName;
+import test.entity.SNP;
 
 /**
  * 测试: 打印输出看看基因宝可检测位点对应的单倍群
