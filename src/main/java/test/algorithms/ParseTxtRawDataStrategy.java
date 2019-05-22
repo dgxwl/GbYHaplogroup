@@ -10,10 +10,15 @@ import java.util.Map;
 import test.entity.SNP;
 import test.prepare.ParseSNPsXlsx;
 
+/**
+ * 解析txt文本原始数据文件
+ * @author Administrator
+ *
+ */
 public class ParseTxtRawDataStrategy implements IParseStrategy {
 
 	@Override
-	public String parse(File rawFile) {
+	public List<SNP> parse(File rawFile) {
 		try (FileReader fr = new FileReader(rawFile);
 				BufferedReader br = new BufferedReader(fr)) {
 			Map<String, SNP> snpMap = ParseSNPsXlsx.getSnpMap();
@@ -22,14 +27,14 @@ public class ParseTxtRawDataStrategy implements IParseStrategy {
 			
 			String[] rows;
 			SNP snp;
-			List<String> list = new LinkedList<>();
+			List<SNP> list = new LinkedList<>();
 			while ((line = br.readLine()) != null) {
 				if (line.startsWith("#")) {
 					continue;
 				}
 				
 				rows = line.split("\\s");
-				if (!rows[1].equals("Y")) {
+				if (!rows[1].equals("Y")) {  //只看Y染色体的位点
 					continue;
 				}
 
@@ -38,20 +43,17 @@ public class ParseTxtRawDataStrategy implements IParseStrategy {
 					continue;
 				}
 
-				if (rows[3].startsWith(snp.getMutant())) {
-					list.add(snp.getHaplogroup() + "-" + snp.getName());
+				if (rows[3].startsWith(snp.getMutant())) {  //匹配突变型
+					list.add(snp);
 				}
 			}
-			list.sort(null);
 			
-			StringBuilder builder = new StringBuilder();
-			for (String l : list) {
-				builder.append(l).append('\n');
-			}
-			
-			return builder.toString();
+			list.sort((o1, o2) -> o1.getHaplogroup().compareTo(o2.getHaplogroup()));  //根据单倍群名称进行排序
+
+			return list;
 		} catch (Exception e) {
-			return "错误: " + e.getMessage();
+			e.printStackTrace();
+			return null;
 		}
 	}
 

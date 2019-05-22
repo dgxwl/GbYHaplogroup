@@ -24,19 +24,22 @@ import test.util.StringUtils;
  */
 public class ParseSNPsXlsx {
 	
-	//key: hg19Pos, value: SNP entry
+	/*
+	 * 将解析得到的所有SNP信息保存到snpMap中
+	 * key: hg19Pos, value: SNP entry
+	 */
 	private static Map<String, SNP> snpMap;
 
 	static {
 		File f = new File("./data/snps.data");
 		if (f.exists()) {
-			readFromSerializedData();  //从序列化文件读取
+			readFromSerializedData();  //从序列化文件读取, 速度较快
 		} else {
-			parseSNPsXlsx();  //解析xlsx
+			parseSNPsXlsx();  //没有snps.data, 解析xlsx生成一个
 		}
 	}
 	
-	private static void parseSNPsXlsx() {
+	private static void parseSNPsXlsx() {  //解析isogg提供的SNP信息, 这些信息保存在SNPs.xlsx文件里
 		File snpFile = new File("./data/SNPs.xlsx");
 		if (!snpFile.exists()) {
 			System.exit(0);
@@ -161,9 +164,5 @@ public class ParseSNPsXlsx {
 	
 	public static Map<String, SNP> getSnpMap() {
 		return snpMap;
-	}
-
-	public static void setSnpMap(Map<String, SNP> snpMap) {
-		ParseSNPsXlsx.snpMap = snpMap;
 	}
 }

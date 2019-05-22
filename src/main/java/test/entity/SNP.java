@@ -2,6 +2,11 @@ package test.entity;
 
 import java.io.Serializable;
 
+/**
+ * SNP实体类
+ * @author Administrator
+ *
+ */
 public class SNP implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
