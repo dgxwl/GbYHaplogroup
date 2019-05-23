@@ -86,6 +86,45 @@ public class ParseRawData extends JPanel {
 		
 		return matchedSNPs;
 	}
+	
+	/**
+	 * 根据已匹配的SNP获取单倍群分型;最终确定的单倍群应每一个上游节点都有匹配,
+	 * 且名称长度最长(即下游最深入)
+	 * @param snps 匹配的SNP list
+	 * @return 单倍群名称
+	 */
+	public static SNP decideHaplogroup(List<SNP> snps) {
+		int[] counts = new int[snps.size()];
+		
+		for (int i = 0; i < snps.size(); i++) {
+			String str = snps.get(i).getHaplogroup();
+			int count = 0;
+			for (int j = 1; j < str.length(); j++) {
+				String sub = str.substring(0, j);
+				
+				for (int k = 0; k < snps.size(); k++) {
+					if (snps.get(k).getHaplogroup().equals(sub)) {
+						count++;
+						break;
+					}
+				}
+			}
+			if (count == str.length() - 1) {
+				counts[i] = count;
+			}
+		}
+		
+		int max = 0;
+		int maxIndex = 0;
+		for (int i = 0; i < counts.length; i++) {
+			if (counts[i] > max) {
+				max = counts[i];
+				maxIndex = i;
+			}
+		}
+		
+		return snps.get(maxIndex);
+	}
 
 	private void handleEvent() {
 		//监听打开选择文件菜单项
@@ -108,7 +147,9 @@ public class ParseRawData extends JPanel {
 				for (SNP s : l) {
 					builder.append(s.getHaplogroup()).append("-").append(s.getName()).append("\n");
 				}
-				//显示解析结果, 从中可得到单倍群分型
+				SNP finalSNP = decideHaplogroup(l);
+				builder.append('\n').append("单倍群为: ").append(finalSNP.getHaplogroup()).append('-').append(finalSNP.getName());
+				//显示解析结果, 从中可得到SNP匹配情况和单倍群分型
 				textArea.setText(builder.toString());
 			}
 		});
