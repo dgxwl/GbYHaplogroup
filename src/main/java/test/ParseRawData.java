@@ -4,6 +4,7 @@ import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -96,21 +97,34 @@ public class ParseRawData extends JPanel {
 	public static SNP decideHaplogroup(List<SNP> snps) {
 		int[] counts = new int[snps.size()];
 		
-		for (int i = 0; i < snps.size(); i++) {
-			String str = snps.get(i).getHaplogroup();
+		List<String> haplogroupList = new LinkedList<>();
+		for (SNP snp : snps) {
+			haplogroupList.add(snp.getHaplogroup());
+		}
+		
+		List<String> closedList = new LinkedList<>();
+		for (int i = 0; i < haplogroupList.size(); i++) {
+			String haplogroup = haplogroupList.get(i);
+			if (closedList.contains(haplogroup)) {
+				continue;
+			}
+			closedList.add(haplogroup);
+			
 			int count = 0;
-			for (int j = 1; j < str.length(); j++) {
-				String sub = str.substring(0, j);
+			for (int j = 1; j < haplogroup.length(); j++) {
+				String sub = haplogroup.substring(0, j);
 				
-				for (int k = 0; k < snps.size(); k++) {
-					if (snps.get(k).getHaplogroup().equals(sub)) {
-						count++;
-						break;
-					}
+				if (haplogroupList.contains(sub)) {
+					count++;
 				}
 			}
-			if (count == str.length() - 1) {
-				counts[i] = count;
+			
+			if (!haplogroupList.contains("O") && haplogroup.startsWith("O")) {
+				count++;
+			}
+			
+			if (count == haplogroup.length() - 1) {
+				counts[i] = count;System.out.println(haplogroup + ", " + count);
 			}
 		}
 		
