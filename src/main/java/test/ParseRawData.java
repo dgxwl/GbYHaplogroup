@@ -124,7 +124,7 @@ public class ParseRawData extends JPanel {
 			}
 			
 			if (count == haplogroup.length() - 1) {
-				counts[i] = count;System.out.println(haplogroup + ", " + count);
+				counts[i] = count;
 			}
 		}
 		
